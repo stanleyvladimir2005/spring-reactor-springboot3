@@ -1,0 +1,14 @@
+#https://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx
+jjwt:
+  expiration: 1800
+  secret: 4u7x!A%D*G-KaNdRgUkXp2s5v8y/B?E(H+MbQeShVmYq3t6w9z$C&F)J@NcRfUjW
+
+#spring.data.mongodb.uri=mongodb+srv://stanleyvladimir:bar2005XP@cluster0.q4ibd.mongodb.net/meseroapp
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/meseroapp
+  main:
+    web-application-type: reactive
+
+
