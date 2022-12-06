@@ -33,7 +33,7 @@ import static org.springframework.hateoas.server.reactive.WebFluxLinkBuilder.met
 import static reactor.function.TupleUtils.function;
 
 @RestController
-@RequestMapping("/clientes")
+@RequestMapping("/v1/clientes")
 public class ClienteController {
 	
 	@Autowired

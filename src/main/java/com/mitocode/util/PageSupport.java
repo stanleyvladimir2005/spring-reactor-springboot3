@@ -1,7 +1,6 @@
 package com.mitocode.util;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 //Generamos esta clase para la paginacion usando Pageable, ya que esta no se encuentra en WebFlux

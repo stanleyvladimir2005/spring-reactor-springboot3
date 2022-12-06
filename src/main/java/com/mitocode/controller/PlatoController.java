@@ -25,7 +25,7 @@ import static org.springframework.hateoas.server.reactive.WebFluxLinkBuilder.met
 import static reactor.function.TupleUtils.function;
 
 @RestController
-@RequestMapping("/platos")
+@RequestMapping("/v1/platos")
 public class PlatoController {
 	
 	@Autowired

@@ -6,7 +6,6 @@ import com.mitocode.util.PageSupport;
 import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
 import java.util.stream.Collectors;
 
 public abstract class CRUDImpl<T, ID> implements ICRUD<T, ID> {

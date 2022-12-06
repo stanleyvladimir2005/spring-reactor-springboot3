@@ -24,7 +24,7 @@ import static org.springframework.hateoas.server.reactive.WebFluxLinkBuilder.met
 import static reactor.function.TupleUtils.function;
 
 @RestController
-@RequestMapping("/facturas")
+@RequestMapping("/v1/facturas")
 public class FacturaController {
 	
 	@Autowired

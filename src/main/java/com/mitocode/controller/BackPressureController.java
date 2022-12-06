@@ -6,11 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
-
 import java.time.Duration;
 
 @RestController
-@RequestMapping("/backpressure")
+@RequestMapping("/v1/backpressure")
 public class BackPressureController {
 	
 	@GetMapping(path = "/stream", produces = MediaType.APPLICATION_JSON_VALUE)	
