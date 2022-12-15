@@ -41,7 +41,6 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
 			case "500" -> {
 				mapException.put("code", "500");
 				mapException.put("excepcion", "Error general del backend");
-				httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			}
 			case "400" -> {
 				Map<String, Object> mapAtributos = request.exchange().getAttributes();
@@ -52,7 +51,6 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
 				} catch (Exception e) {
 					mapException.put("error", "500");
 					mapException.put("excepcion", "Error general del backend");
-					httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 				}
 			}
 			case "406" -> {
