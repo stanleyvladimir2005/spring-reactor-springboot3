@@ -1,8 +1,8 @@
 package com.mitocode;
 
-import com.mitocode.handler.ClienteHandler;
-import com.mitocode.handler.FacturaHandler;
-import com.mitocode.handler.PlatoHandler;
+import com.mitocode.handler.ClientHandler;
+import com.mitocode.handler.BillHandler;
+import com.mitocode.handler.DishHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -15,30 +15,30 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 public class RouterConfig {
 
 	@Bean
-	public RouterFunction<ServerResponse> rutasPlatos(PlatoHandler handler) {
-		return route(GET("/v2/platos"), handler::listar) //req -> handler.listar(req)
-				.andRoute(GET("/v2/platos/{id}"), handler::listarPorId)
-				.andRoute(GET("/v2/platos/hateoas/{id}"), handler::listarPorIdHateoas)
-				.andRoute(POST("/v2/platos"), handler::registrar)
-				.andRoute(PUT("/v2/platos/{id}"), handler::modificar)
-				.andRoute(DELETE("/v2/platos/{id}"), handler::eliminar);
+	public RouterFunction<ServerResponse> rutasPlatos(DishHandler handler) {
+		return route(GET("/v2/dishes"), handler::findAll) //req -> handler.listar(req)
+				.andRoute(GET("/v2/dishes/{id}"), handler::findById)
+				.andRoute(GET("/v2/dishes/hateoas/{id}"), handler::listByHateoas)
+				.andRoute(POST("/v2/dishes"), handler::save)
+				.andRoute(PUT("/v2/dishes/{id}"), handler::update)
+				.andRoute(DELETE("/v2/dishes/{id}"), handler::delete);
 	}
 	
 	@Bean
-	public RouterFunction<ServerResponse> rutasClientes(ClienteHandler handler) {
-		return route(GET("/v2/clientes"), handler::listar) //req -> handler.listar(req)
-				.andRoute(GET("/v2/clientes/{id}"), handler::listarPorId)
-				.andRoute(POST("/v2/clientes"), handler::registrar)
-				.andRoute(PUT("/v2/clientes/{id}"), handler::modificar)
-				.andRoute(DELETE("/v2/clientes/{id}"), handler::eliminar);
+	public RouterFunction<ServerResponse> rutasClientes(ClientHandler handler) {
+		return route(GET("/v2/clients"), handler::findAll) //req -> handler.listar(req)
+				.andRoute(GET("/v2/clients/{id}"), handler::findById)
+				.andRoute(POST("/v2/clients"), handler::save)
+				.andRoute(PUT("/v2/clients/{id}"), handler::update)
+				.andRoute(DELETE("/v2/clients/{id}"), handler::delete);
 	}
 	
 	@Bean
-	public RouterFunction<ServerResponse> rutasFacturas(FacturaHandler handler) {
-		return route(GET("/v2/facturas"), handler::listar) //req -> handler.listar(req)
-				.andRoute(GET("/v2/facturas/{id}"), handler::listarPorId)
-				.andRoute(POST("/v2/facturas"), handler::registrar)
-				.andRoute(PUT("/v2/facturas/{id}"), handler::modificar)
-				.andRoute(DELETE("/v2/facturas/{id}"), handler::eliminar);
+	public RouterFunction<ServerResponse> rutasFacturas(BillHandler handler) {
+		return route(GET("/v2/bills"), handler::findAll) //req -> handler.listar(req)
+				.andRoute(GET("/v2/bills/{id}"), handler::findById)
+				.andRoute(POST("/v2/bills"), handler::save)
+				.andRoute(PUT("/v2/bills/{id}"), handler::update)
+				.andRoute(DELETE("/v2/bills/{id}"), handler::delete);
 	}
 }

@@ -1,8 +1,8 @@
 package com.mitocode.controller;
 
 import com.mitocode.dto.RestResponse;
-import com.mitocode.model.Plato;
-import com.mitocode.service.IPlatoService;
+import com.mitocode.model.Dish;
+import com.mitocode.service.IDishService;
 import com.mitocode.util.PageSupport;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,31 +25,31 @@ import static org.springframework.hateoas.server.reactive.WebFluxLinkBuilder.met
 import static reactor.function.TupleUtils.function;
 
 @RestController
-@RequestMapping("/v1/platos")
-public class PlatoController {
+@RequestMapping("/v1/dishes")
+public class DishController {
 	
 	@Autowired
-	private IPlatoService service;
+	private IDishService service;
 		
 	@GetMapping
-	public Mono<ResponseEntity<Flux<Plato>>> listar() {
-		Flux<Plato> fxPlatos = service.listar();
+	public Mono<ResponseEntity<Flux<Dish>>> findAll() {
+		Flux<Dish> fxDishes = service.findAll();
 		return Mono.just(ResponseEntity
 				.ok()
 				.contentType(MediaType.APPLICATION_JSON)
-				.body(fxPlatos)
+				.body(fxDishes)
 				);
 	}
 	
 	//Forma especial para mostrar la lista en forma content y error
 	@GetMapping("/RR")
-	public Mono<ResponseEntity<RestResponse>> listarRR() {
-		Flux<Plato> fxPlatos = service.listar();
-		return fxPlatos
+	public Mono<ResponseEntity<RestResponse>> listRR() {
+		Flux<Dish> fxDishes = service.findAll();
+		return fxDishes
 			.collectList()
-			.map(lista -> {
+			.map(list -> {
 				RestResponse rr = new RestResponse();
-				rr.setContent(lista);
+				rr.setContent(list);
 				rr.setErrors(new ArrayList<>());	
 				return rr;
 			})
@@ -60,18 +60,18 @@ public class PlatoController {
 	}
 	
 	@GetMapping("/{id}")
-	public Mono<ResponseEntity<Plato>> listarPorId(@PathVariable("id") String id){
-		return service.listarPorId(id) //Mono<Plato>
+	public Mono<ResponseEntity<Dish>> findById(@PathVariable("id") String id){
+		return service.findById(id) //Mono<Dish>
 				.map(p -> ResponseEntity.ok()
 						.contentType(MediaType.APPLICATION_JSON)
 						.body(p)
-						) //Mono<ResponseEntity<Plato>>
+						) //Mono<ResponseEntity<Dish>>
 				.defaultIfEmpty(ResponseEntity.notFound().build());				
 	}
 	
 	@PostMapping
-	public Mono<ResponseEntity<Plato>> registrar(@Valid @RequestBody Plato p, final ServerHttpRequest req){
-		return service.registrar(p)
+	public Mono<ResponseEntity<Dish>> save(@Valid @RequestBody Dish p, final ServerHttpRequest req){
+		return service.save(p)
 				.map(pl -> ResponseEntity.created(URI.create(req.getURI().toString().concat("/").concat(pl.getId())))
 						.contentType(MediaType.APPLICATION_JSON)
 						.body(pl)
@@ -79,18 +79,18 @@ public class PlatoController {
 	}
 	
 	@PutMapping("/{id}")
-	public Mono<ResponseEntity<Plato>> modificar(@Valid @RequestBody Plato p, @PathVariable("id") String id){
-		Mono<Plato> monoPlato = Mono.just(p);
-		Mono<Plato> monoBD = service.listarPorId(id);
+	public Mono<ResponseEntity<Dish>> update(@Valid @RequestBody Dish p, @PathVariable("id") String id){
+		Mono<Dish> monoDish = Mono.just(p);
+		Mono<Dish> monoBD = service.findById(id);
 		return monoBD
-				.zipWith(monoPlato, (bd, pl) -> {
+				.zipWith(monoDish, (bd, pl) -> {
 					bd.setId(id);
-					bd.setNombre(pl.getNombre());
-					bd.setPrecio(pl.getPrecio());
-					bd.setEstado(pl.isEstado());
+					bd.setDishName(pl.getDishName());
+					bd.setPrice(pl.getPrice());
+					bd.setStatus(pl.isStatus());
 					return bd;
 				})
-				.flatMap(service::modificar) //bd -> service.modificar(bd)
+				.flatMap(service::update) //bd -> service.modificar(bd)
 				.map(pl -> ResponseEntity.ok()
 						.contentType(MediaType.APPLICATION_JSON)
 						.body(pl))
@@ -98,27 +98,27 @@ public class PlatoController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public Mono<ResponseEntity<Void>> eliminar(@PathVariable("id") String id){
-		return service.listarPorId(id)
-				.flatMap(p -> service.eliminar(p.getId()) // Mono<Void>  return service.eliminar(p.getId())
+	public Mono<ResponseEntity<Void>> delete(@PathVariable("id") String id){
+		return service.findById(id)
+				.flatMap(p -> service.delete(p.getId()) // Mono<Void>  return service.eliminar(p.getId())
 						.then(Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT))))
 				.defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 	
 	@GetMapping("/hateoas/{id}")
-	public Mono<EntityModel<Plato>> listarHateoasPorId(@PathVariable("id") String id){
-		//localhost:8080/platos/60779cc08e37a27164468033	
-		Mono<Link> link1 =linkTo(methodOn(PlatoController.class).listarPorId(id)).withSelfRel().toMono();
-		Mono<Link> link2 =linkTo(methodOn(PlatoController.class).listarPorId(id)).withSelfRel().toMono();
+	public Mono<EntityModel<Dish>> listByHateoas(@PathVariable("id") String id){
+		//localhost:8080/Dishes/60779cc08e37a27164468033	
+		Mono<Link> link1 =linkTo(methodOn(DishController.class).findById(id)).withSelfRel().toMono();
+		Mono<Link> link2 =linkTo(methodOn(DishController.class).findById(id)).withSelfRel().toMono();
 		return link1.zipWith(link2)
 				.map(function((left, right) -> Links.of(left, right)))				
-				.zipWith(service.listarPorId(id), (lk, p) -> EntityModel.of(p, lk));
+				.zipWith(service.findById(id), (lk, p) -> EntityModel.of(p, lk));
 	}
 	
 	@GetMapping("/pageable")
-	public Mono<ResponseEntity<PageSupport<Plato>>> listarPagebale(@RequestParam(name = "page", defaultValue = "0") int page,@RequestParam(name = "size", defaultValue = "10") int size	){
+	public Mono<ResponseEntity<PageSupport<Dish>>> listPagebale(@RequestParam(name = "page", defaultValue = "0") int page, @RequestParam(name = "size", defaultValue = "10") int size	){
 		Pageable pageRequest = PageRequest.of(page, size);
-		return service.listarPage(pageRequest)
+		return service.listPage(pageRequest)
 				.map(p -> ResponseEntity.ok()
 						.contentType(MediaType.APPLICATION_JSON)
 						.body(p)	

@@ -15,11 +15,11 @@ public class Menu {
 	@Id
 	private String id;
 
-	@Field(name = "icono")
-	private String icono;
+	@Field(name = "icon")
+	private String icon;
 
-	@Field(name = "nombre")
-	private String nombre;
+	@Field(name = "menuName")
+	private String menuName;
 
 	@Field(name = "url")
 	private String url;

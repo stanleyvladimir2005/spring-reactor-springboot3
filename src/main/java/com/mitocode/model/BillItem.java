@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FacturaItem {
+public class BillItem {
 
-	private Integer cantidad;
-	private Plato plato;
+	private Integer quantity;
+	private Dish dish;
 }

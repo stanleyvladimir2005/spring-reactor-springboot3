@@ -5,12 +5,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.io.Serial;
 
 @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-public class ArchivoException extends RuntimeException{
+public class FileException extends RuntimeException{
 
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	public ArchivoException(String mensaje) {
-		super(mensaje);
+	public FileException(String message) {
+		super(message);
 	}
 }

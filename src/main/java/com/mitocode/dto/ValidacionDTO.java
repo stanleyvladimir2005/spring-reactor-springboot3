@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class ValidacionDTO {
 
-	private String campo;
-	private String mensaje;
+	private String field;
+	private String message;
 }

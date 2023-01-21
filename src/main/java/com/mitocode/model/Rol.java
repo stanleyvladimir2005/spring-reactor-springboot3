@@ -14,6 +14,6 @@ public class Rol {
 	@Id
 	private String id;
 
-	@Field(name = "nombre")
-	private String nombre;
+	@Field(name = "rolName")
+	private String rolName;
 }

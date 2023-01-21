@@ -7,10 +7,10 @@ import reactor.core.publisher.Mono;
 
 public interface ICRUD<T, ID> {
 
-	Mono<T> registrar(T t);
-	Mono<T> modificar(T t);
-	Flux<T> listar();
-	Mono<T> listarPorId(ID id);
-	Mono<Void> eliminar(ID id);
-	Mono<PageSupport<T>> listarPage(Pageable page);
+	Mono<T> save(T t);
+	Mono<T> update(T t);
+	Flux<T> findAll();
+	Mono<T> findById(ID id);
+	Mono<Void> delete(ID id);
+	Mono<PageSupport<T>> listPage(Pageable page);
 }

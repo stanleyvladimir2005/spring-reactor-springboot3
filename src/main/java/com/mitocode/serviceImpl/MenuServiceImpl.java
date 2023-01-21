@@ -20,7 +20,7 @@ public class MenuServiceImpl extends CRUDImpl<Menu, String> implements IMenuServ
 	}
 
 	@Override
-	public Flux<Menu> obtenerMenus(String[] roles) {
-		return repo.obtenerMenus(roles);
+	public Flux<Menu> getMenus(String[] roles) {
+		return repo.getMenus(roles);
 	}
 }

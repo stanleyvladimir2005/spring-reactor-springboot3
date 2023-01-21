@@ -9,20 +9,20 @@ import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Document(collection = "usuarios")
-public class Usuario {
+@Document(collection = "users")
+public class User {
 
 	@Id
 	private String id;
 
-	@Field(name = "usuario")
-	private String usuario;
+	@Field(name = "userName")
+	private String userName;
 
-	@Field(name = "clave")
-	private String clave;
+	@Field(name = "password")
+	private String password;
 
-	@Field(name = "estado")
-	private Boolean estado;
+	@Field(name = "status")
+	private Boolean status;
 
 	private List<Rol> roles;
 }

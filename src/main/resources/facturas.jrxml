@@ -6,7 +6,7 @@
 		<![CDATA[]]>
 	</queryString>
 	<field name="cantidad" class="java.lang.Integer"/>
-	<field name="plato" class="com.mitocode.model.Plato"/>
+	<field name="plato" class="com.mitocode.model.Dish"/>
 	<background>
 		<band/>
 	</background>

@@ -1,8 +1,8 @@
 package com.mitocode.controller;
 
 import com.mitocode.dto.FiltroDTO;
-import com.mitocode.model.Factura;
-import com.mitocode.service.IFacturaService;
+import com.mitocode.model.Bill;
+import com.mitocode.service.IBillService;
 import com.mitocode.util.PageSupport;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,35 +24,35 @@ import static org.springframework.hateoas.server.reactive.WebFluxLinkBuilder.met
 import static reactor.function.TupleUtils.function;
 
 @RestController
-@RequestMapping("/v1/facturas")
-public class FacturaController {
+@RequestMapping("/v1/bills")
+public class BillController {
 	
 	@Autowired
-	private IFacturaService service;
+	private IBillService service;
 	
 	@GetMapping
-	public Mono<ResponseEntity<Flux<Factura>>> listar() {
-		Flux<Factura> fxPlatos = service.listar();
+	public Mono<ResponseEntity<Flux<Bill>>> findAll() {
+		Flux<Bill> fxBills = service.findAll();
 		return Mono.just(ResponseEntity
 				.ok()
 				.contentType(MediaType.APPLICATION_JSON)
-				.body(fxPlatos)
+				.body(fxBills)
 				);
 	}
 	
 	@GetMapping("/{id}")
-	public Mono<ResponseEntity<Factura>> listarPorId(@PathVariable("id") String id){
-		return service.listarPorId(id) //Mono<Factura>
+	public Mono<ResponseEntity<Bill>> findById(@PathVariable("id") String id){
+		return service.findById(id) //Mono<Bill>
 				.map(p -> ResponseEntity.ok()
 						.contentType(MediaType.APPLICATION_JSON)
 						.body(p)
-						) //Mono<ResponseEntity<Factura>>
+						) //Mono<ResponseEntity<Bill>>
 				.defaultIfEmpty(ResponseEntity.notFound().build());
 	}
 	
 	@PostMapping
-	public Mono<ResponseEntity<Factura>> registrar(@Valid @RequestBody Factura p, final ServerHttpRequest req){
-		return service.registrar(p)
+	public Mono<ResponseEntity<Bill>> save (@Valid @RequestBody Bill p, final ServerHttpRequest req){
+		return service.save(p)
 				.map(pl -> ResponseEntity.created(URI.create(req.getURI().toString().concat("/").concat(pl.getId())))
 						.contentType(MediaType.APPLICATION_JSON)
 						.body(pl)
@@ -60,19 +60,19 @@ public class FacturaController {
 	}
 	
 	@PutMapping("/{id}")
-	public Mono<ResponseEntity<Factura>> modificar(@Valid @RequestBody Factura p, @PathVariable("id") String id){
-		Mono<Factura> monoPlato = Mono.just(p);
-		Mono<Factura> monoBD = service.listarPorId(id);
+	public Mono<ResponseEntity<Bill>> modificar(@Valid @RequestBody Bill p, @PathVariable("id") String id){
+		Mono<Bill> monoBill = Mono.just(p);
+		Mono<Bill> monoBD = service.findById(id);
 		return monoBD
-				.zipWith(monoPlato, (bd, pl) -> {
+				.zipWith(monoBill, (bd, pl) -> {
 					bd.setId(id);
-					bd.setCliente(p.getCliente());
-					bd.setDescripcion(p.getDescripcion());
-					bd.setObservacion(p.getObservacion());
+					bd.setClient(p.getClient());
+					bd.setDescription(p.getDescription());
+					bd.setObservation(p.getObservation());
 					bd.setItems(p.getItems());
 					return bd;
 				})
-				.flatMap(service::modificar) //bd -> service.modificar(bd)
+				.flatMap(service::update) //bd -> service.modificar(bd)
 				.map(pl -> ResponseEntity.ok()
 						.contentType(MediaType.APPLICATION_JSON)
 						.body(pl))
@@ -80,27 +80,27 @@ public class FacturaController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public Mono<ResponseEntity<Void>> eliminar(@PathVariable("id") String id){
-		return service.listarPorId(id)
-				.flatMap(p -> service.eliminar(p.getId()) //Mono<Void>
+	public Mono<ResponseEntity<Void>> delete(@PathVariable("id") String id){
+		return service.findById(id)
+				.flatMap(p -> service.delete(p.getId()) //Mono<Void>
 						.then(Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT))))
 				.defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 
 	@GetMapping("/hateoas/{id}")
-	public Mono<EntityModel<Factura>> listarHateoasPorId(@PathVariable("id") String id){
+	public Mono<EntityModel<Bill>> listByHateoas(@PathVariable("id") String id){
 		//localhost:8080/platos/60779cc08e37a27164468033	
-		Mono<Link> link1 =linkTo(methodOn(FacturaController.class).listarPorId(id)).withSelfRel().toMono();
-		Mono<Link> link2 =linkTo(methodOn(FacturaController.class).listarPorId(id)).withSelfRel().toMono();
+		Mono<Link> link1 =linkTo(methodOn(BillController.class).findById(id)).withSelfRel().toMono();
+		Mono<Link> link2 =linkTo(methodOn(BillController.class).findById(id)).withSelfRel().toMono();
 		return link1.zipWith(link2)
 				.map(function((left, right) -> Links.of(left, right)))				
-				.zipWith(service.listarPorId(id), (lk, p) -> EntityModel.of(p, lk));
+				.zipWith(service.findById(id), (lk, p) -> EntityModel.of(p, lk));
 	}
 	
 	@GetMapping("/pageable")
-	public Mono<ResponseEntity<PageSupport<Factura>>> listarPagebale(@RequestParam(name = "page", defaultValue = "0") int page, @RequestParam(name = "size", defaultValue = "10") int size){
+	public Mono<ResponseEntity<PageSupport<Bill>>> listPagebale(@RequestParam(name = "page", defaultValue = "0") int page, @RequestParam(name = "size", defaultValue = "10") int size){
 		Pageable pageRequest = PageRequest.of(page, size);
-		return service.listarPage(pageRequest)
+		return service.listPage(pageRequest)
 				.map(p -> ResponseEntity.ok()
 						.contentType(MediaType.APPLICATION_JSON)
 						.body(p)	
@@ -109,8 +109,8 @@ public class FacturaController {
 	}
 	
 	@PostMapping("/buscar") //Metodo para buscar
-	public Mono<ResponseEntity<Flux<Factura>>> buscar(@RequestBody FiltroDTO filtro){		
-		Flux<Factura> fxFacturas = service.obtenerFacturasPorFiltro(filtro);
+	public Mono<ResponseEntity<Flux<Bill>>> buscar(@RequestBody FiltroDTO filtro){
+		Flux<Bill> fxFacturas = service.getDishesByFilter(filtro);
 		return Mono.just(ResponseEntity.ok()
 				.contentType(MediaType.APPLICATION_JSON)
 				.body(fxFacturas)
@@ -119,11 +119,11 @@ public class FacturaController {
 
 	@GetMapping("/generarReporte/{id}")
 	public Mono<ResponseEntity<byte[]>> generarReporte(@PathVariable("id") String id){
-		Mono<byte[]> monoReporte = service.generarReporte(id);
+		Mono<byte[]> monoReporte = service.generateReport(id);
 		return monoReporte
 				.map(bytes -> ResponseEntity.ok()
 						.contentType(MediaType.APPLICATION_OCTET_STREAM)
 						.body(bytes)
-				).defaultIfEmpty(new ResponseEntity<byte[]>(HttpStatus.NO_CONTENT));
+				).defaultIfEmpty(new ResponseEntity<>(HttpStatus.NO_CONTENT));
 	}
 }
