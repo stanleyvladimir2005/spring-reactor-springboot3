@@ -43,7 +43,7 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
 				mapException.put("excepcion", "Error general del backend");
 			}
 			case "400" -> {
-				Map<String, Object> mapAtributos = request.exchange().getAttributes();
+				request.exchange().getAttributes();
 				try {
 					mapException.put("code", "400");
 					mapException.put("excepcion", "Peticion incorrecta");

@@ -125,7 +125,7 @@ public class ClientController {
 				"api_key", "513196324494765",
 				"api_secret", "PUvNv61a0Ohd4DadfBIillVjuHI"));
 		return service.findById(id)
-				.publishOn(Schedulers.boundedElastic())
+				.publishOn(Schedulers.boundedElastic()) //boundedElastic se usa para transferir procesos bloqueantes
 				.flatMap(c -> {
 					try {
 						File f = Files.createTempFile("temp", file.filename()).toFile();  //Se lee el archivo y se carga en memoria
