@@ -1,6 +1,6 @@
 package com.mitocode.serviceImpl;
 
-import com.mitocode.dto.FiltroDTO;
+import com.mitocode.dto.FilterDTO;
 import com.mitocode.model.Bill;
 import com.mitocode.repo.IClientRepo;
 import com.mitocode.repo.IBillRepo;
@@ -36,7 +36,7 @@ public class BillServiceImpl extends CRUDImpl<Bill, String> implements IBillServ
 
 	//Metodo para buscar facturas
 	@Override
-	public Flux<Bill> getDishesByFilter(FiltroDTO filter) {
+	public Flux<Bill> getDishesByFilter(FilterDTO filter) {
 		String criter = filter.getIdClient() != null ? "C" : "O";
 		
 		if (criter.equalsIgnoreCase("C"))  //si la busqueda viene el cliente

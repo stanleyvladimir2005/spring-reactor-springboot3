@@ -1,6 +1,6 @@
 package com.mitocode.controller;
 
-import com.mitocode.dto.FiltroDTO;
+import com.mitocode.dto.FilterDTO;
 import com.mitocode.model.Bill;
 import com.mitocode.service.IBillService;
 import com.mitocode.util.PageSupport;
@@ -109,7 +109,7 @@ public class BillController {
 	}
 	
 	@PostMapping("/buscar") //Metodo para buscar
-	public Mono<ResponseEntity<Flux<Bill>>> buscar(@RequestBody FiltroDTO filtro){
+	public Mono<ResponseEntity<Flux<Bill>>> buscar(@RequestBody FilterDTO filtro){
 		Flux<Bill> fxFacturas = service.getDishesByFilter(filtro);
 		return Mono.just(ResponseEntity.ok()
 				.contentType(MediaType.APPLICATION_JSON)
