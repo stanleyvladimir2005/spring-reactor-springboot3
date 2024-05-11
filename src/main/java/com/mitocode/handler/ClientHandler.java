@@ -29,7 +29,7 @@ public class ClientHandler {
 	}
 	
 	public Mono<ServerResponse> findById(ServerRequest req){
-		String id = req.pathVariable("id");
+		var id = req.pathVariable("id");
 		return service.findById(id)
 				.flatMap(p -> ServerResponse
 						.ok()
@@ -40,7 +40,7 @@ public class ClientHandler {
 	}
 	
 	public Mono<ServerResponse> save(ServerRequest req) {
-		Mono<Client> monoPlato = req.bodyToMono(Client.class);
+		var monoPlato = req.bodyToMono(Client.class);
 		return monoPlato
 				.flatMap(validadorGeneral::validate)//validacion
 				.flatMap(service::save)//p -> service.registrar(p)
@@ -51,10 +51,10 @@ public class ClientHandler {
 	}
 	
 	public Mono<ServerResponse> update(ServerRequest req) {
-		Mono<Client> monoPlato = req.bodyToMono(Client.class);
-		Mono<Client> monoBD = service.findById(req.pathVariable("id"));
+		var monoPlato = req.bodyToMono(Client.class);
+		var monoBD = service.findById(req.pathVariable("id"));
 		return monoBD
-				.zipWith(monoPlato, (bd, p) -> {				
+				.zipWith(monoPlato, (bd, p) -> {
 					bd.setId(p.getId());
 					bd.setFirstName(p.getFirstName());
 					bd.setLastName(p.getLastName());
@@ -71,7 +71,7 @@ public class ClientHandler {
 	}
 	
 	public Mono<ServerResponse> delete(ServerRequest req){
-		String id = req.pathVariable("id");
+		var id = req.pathVariable("id");
 		return service.findById(id)
 				.flatMap(p -> service.delete(p.getId())
 						.then(ServerResponse.noContent().build())

@@ -31,7 +31,7 @@ public class DishHandler {
 	}
 	
 	public Mono<ServerResponse> findById(ServerRequest req){
-		String id = req.pathVariable("id");
+		var id = req.pathVariable("id");
 		return service.findById(id)
 				.flatMap(p -> ServerResponse
 						.ok()
@@ -42,7 +42,7 @@ public class DishHandler {
 	}
 	
 	public Mono<ServerResponse> save(ServerRequest req) {
-		Mono<Dish> monoPlato = req.bodyToMono(Dish.class);
+		var monoPlato = req.bodyToMono(Dish.class);
 		return monoPlato
 				.flatMap(validadorGeneral::validate)//validacion
 				.flatMap(service::save)//p -> service.registrar(p)
@@ -53,8 +53,8 @@ public class DishHandler {
 	}
 	
 	public Mono<ServerResponse> update(ServerRequest req) {
-		Mono<Dish> monoPlato = req.bodyToMono(Dish.class);
-		Mono<Dish> monoBD = service.findById(req.pathVariable("id"));
+		var monoPlato = req.bodyToMono(Dish.class);
+		var monoBD = service.findById(req.pathVariable("id"));
 		return monoBD
 				.zipWith(monoPlato, (bd, p) -> {				
 					bd.setId(p.getId());
@@ -71,7 +71,7 @@ public class DishHandler {
 	}
 	
 	public Mono<ServerResponse> delete(ServerRequest req){
-		String id = req.pathVariable("id");
+		var id = req.pathVariable("id");
 		return service.findById(id)
 				.flatMap(p -> service.delete(p.getId())
 						.then(ServerResponse.noContent().build())
@@ -81,7 +81,7 @@ public class DishHandler {
 	
 	//HATEOAS EN HANDLER 
 	public Mono<ServerResponse> listByHateoas(ServerRequest req){
-		String id = req.pathVariable("id");
+		var id = req.pathVariable("id");
 		return service.findById(id)
 				.map(p -> {
 					HateoasModel hm = new HateoasModel();

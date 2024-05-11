@@ -29,7 +29,7 @@ public class MenuController {
 				.map(Authentication::getAuthorities)
 				.map(roles -> {
 					var rolesString = roles.stream().map(Object::toString).collect(Collectors.joining(","));
-					String[] strings = rolesString.split(",");
+					var strings = rolesString.split(",");
 					return service.getMenus(strings);
 				})
 				.flatMap(fx -> Mono.just(ResponseEntity.ok()  //Mono.just(ResponseEntity.ok()

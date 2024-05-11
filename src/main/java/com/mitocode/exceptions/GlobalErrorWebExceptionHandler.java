@@ -33,10 +33,10 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
 	}
 	
 	private Mono<ServerResponse> renderErrorResponse(ServerRequest request) {
-		Map<String, Object> errorGeneral = getErrorAttributes(request, ErrorAttributeOptions.defaults());
-		Map<String, Object> mapException = new HashMap<>();
+		var errorGeneral = getErrorAttributes(request, ErrorAttributeOptions.defaults());
+		var mapException = new HashMap<String, Object>();
 		var httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-		String statusCode = String.valueOf(errorGeneral.get("status"));
+		var statusCode = String.valueOf(errorGeneral.get("status"));
 		switch (statusCode) {
 			case "500" -> {
 				mapException.put("code", "500");
@@ -64,10 +64,9 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
 				httpStatus = HttpStatus.CONFLICT;
 			}
 		}
-		RestResponse rr = new RestResponse();
+		var rr = new RestResponse();
 		rr.setContent(new ArrayList<>());
 		rr.setErrors(List.of(new ErrorResponse(mapException)));
-		
 		return ServerResponse.status(httpStatus)
 				.contentType(MediaType.APPLICATION_JSON)
 				.body(BodyInserters.fromValue(rr));

@@ -25,7 +25,7 @@ public class PageSupport<T> {
 
 	@JsonProperty
 	public boolean first() {
-		return pageNumber == Integer.parseInt(FIRST_PAGE_NUM);
+		return pageNumber == 0;
 	}
 
 	@JsonProperty

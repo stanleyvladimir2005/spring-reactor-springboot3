@@ -7,9 +7,7 @@ import com.mitocode.util.PageSupport;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Links;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,7 +30,7 @@ public class BillController {
 	
 	@GetMapping
 	public Mono<ResponseEntity<Flux<Bill>>> findAll() {
-		Flux<Bill> fxBills = service.findAll();
+		var fxBills = service.findAll();
 		return Mono.just(ResponseEntity
 				.ok()
 				.contentType(MediaType.APPLICATION_JSON)
@@ -61,8 +59,8 @@ public class BillController {
 	
 	@PutMapping("/{id}")
 	public Mono<ResponseEntity<Bill>> modificar(@Valid @RequestBody Bill p, @PathVariable("id") String id){
-		Mono<Bill> monoBill = Mono.just(p);
-		Mono<Bill> monoBD = service.findById(id);
+		var monoBill = Mono.just(p);
+		var monoBD = service.findById(id);
 		return monoBD
 				.zipWith(monoBill, (bd, pl) -> {
 					bd.setId(id);
@@ -90,16 +88,17 @@ public class BillController {
 	@GetMapping("/hateoas/{id}")
 	public Mono<EntityModel<Bill>> listByHateoas(@PathVariable("id") String id){
 		//localhost:8080/platos/60779cc08e37a27164468033	
-		Mono<Link> link1 =linkTo(methodOn(BillController.class).findById(id)).withSelfRel().toMono();
-		Mono<Link> link2 =linkTo(methodOn(BillController.class).findById(id)).withSelfRel().toMono();
+		var link1 =linkTo(methodOn(BillController.class).findById(id)).withSelfRel().toMono();
+		var link2 =linkTo(methodOn(BillController.class).findById(id)).withSelfRel().toMono();
 		return link1.zipWith(link2)
 				.map(function((left, right) -> Links.of(left, right)))				
 				.zipWith(service.findById(id), (lk, p) -> EntityModel.of(p, lk));
 	}
 	
 	@GetMapping("/pageable")
-	public Mono<ResponseEntity<PageSupport<Bill>>> listPagebale(@RequestParam(name = "page", defaultValue = "0") int page, @RequestParam(name = "size", defaultValue = "10") int size){
-		Pageable pageRequest = PageRequest.of(page, size);
+	public Mono<ResponseEntity<PageSupport<Bill>>> listPagebale(@RequestParam(name = "page", defaultValue = "0") int page,
+																@RequestParam(name = "size", defaultValue = "10") int size){
+		var pageRequest = PageRequest.of(page, size);
 		return service.listPage(pageRequest)
 				.map(p -> ResponseEntity.ok()
 						.contentType(MediaType.APPLICATION_JSON)
@@ -110,7 +109,7 @@ public class BillController {
 	
 	@PostMapping("/buscar") //Metodo para buscar
 	public Mono<ResponseEntity<Flux<Bill>>> buscar(@RequestBody FilterDTO filtro){
-		Flux<Bill> fxFacturas = service.getDishesByFilter(filtro);
+		var fxFacturas = service.getDishesByFilter(filtro);
 		return Mono.just(ResponseEntity.ok()
 				.contentType(MediaType.APPLICATION_JSON)
 				.body(fxFacturas)
@@ -119,7 +118,7 @@ public class BillController {
 
 	@GetMapping("/generarReporte/{id}")
 	public Mono<ResponseEntity<byte[]>> generarReporte(@PathVariable("id") String id){
-		Mono<byte[]> monoReporte = service.generateReport(id);
+		var monoReporte = service.generateReport(id);
 		return monoReporte
 				.map(bytes -> ResponseEntity.ok()
 						.contentType(MediaType.APPLICATION_OCTET_STREAM)

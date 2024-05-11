@@ -29,7 +29,7 @@ public class BillHandler {
 	}
 	
 	public Mono<ServerResponse> findById (ServerRequest req){
-		String id = req.pathVariable("id");
+		var id = req.pathVariable("id");
 		return service.findById(id)
 				.flatMap(p -> ServerResponse
 						.ok()
@@ -40,7 +40,7 @@ public class BillHandler {
 	}
 	
 	public Mono<ServerResponse> save(ServerRequest req) {
-		Mono<Bill> monoFactura = req.bodyToMono(Bill.class);
+		var monoFactura = req.bodyToMono(Bill.class);
 		return monoFactura		//VALIDACION CONSTRAINT DE LA CAPA MODELO. METODO 2
 				.flatMap(validadorGeneral::validate)//validacion
 				.flatMap(service::save)//p -> service.registrar(p)
@@ -51,8 +51,8 @@ public class BillHandler {
 	}
 	
 	public Mono<ServerResponse> update(ServerRequest req) {
-		Mono<Bill> monoPlato = req.bodyToMono(Bill.class);
-		Mono<Bill> monoBD = service.findById(req.pathVariable("id"));
+		var monoPlato = req.bodyToMono(Bill.class);
+		var monoBD = service.findById(req.pathVariable("id"));
 		return monoBD
 				.zipWith(monoPlato, (bd, p) -> {				
 					bd.setId(req.pathVariable("id"));
@@ -72,7 +72,7 @@ public class BillHandler {
 	}
 	
 	public Mono<ServerResponse> delete(ServerRequest req){
-		String id = req.pathVariable("id");
+		var id = req.pathVariable("id");
 		return service.findById(id)
 				.flatMap(p -> service.delete(p.getId())
 						.then(ServerResponse.noContent().build())

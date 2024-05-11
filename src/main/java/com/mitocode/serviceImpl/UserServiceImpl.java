@@ -28,7 +28,7 @@ public class UserServiceImpl extends CRUDImpl<User, String> implements IUserServ
 	
 	@Override
 	public Mono<com.mitocode.security.User> searchByUser(String user) {
-		Mono<User> monoUser = repo.findOneByUser(user);
+		var monoUser = repo.findOneByUser(user);
 		List<String> roles = new ArrayList<>();
 		return monoUser.flatMap(u -> Flux.fromIterable(u.getRoles())
 				.flatMap(rol -> rolRepo.findById(rol.getId())
