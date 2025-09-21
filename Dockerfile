@@ -1,4 +1,4 @@
-FROM openjdk:21-slim
+FROM openjdk:25-slim
 
 LABEL author=stanleyvladimir2005@gmail.com
 
