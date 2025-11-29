@@ -29,12 +29,13 @@ public class BackPressureController {
 	    return Flux.range(0, 5000)
 	             .map(t -> new Dish("1", "ARROZ", 20.0, true));
 	}
-	
+
+    /*
 	@GetMapping(path = "/streamFinito", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
     public Flux<Dish> fluxFinitoStream() {
         return Flux.range(0, 5000)
                 .map(t -> new Dish("1", "ARROZ", 20.0, true));
-    }
+    }*/
 
 	@GetMapping(value= "/buffer")
 	public Flux<Integer> testContrapresion() {

@@ -1,5 +1,6 @@
 package com.mitocode.exceptions;
 
+/*
 import com.mitocode.dto.ErrorResponse;
 import com.mitocode.dto.RestResponse;
 import org.springframework.boot.autoconfigure.web.WebProperties;
@@ -71,4 +72,4 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
 				.contentType(MediaType.APPLICATION_JSON)
 				.body(BodyInserters.fromValue(rr));
 	}
-}
+}*/

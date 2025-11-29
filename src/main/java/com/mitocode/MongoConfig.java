@@ -1,5 +1,6 @@
 package com.mitocode;
 
+/*
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -19,4 +20,4 @@ public class MongoConfig implements InitializingBean{
 	public void afterPropertiesSet() {
 		mappingMongoConverter.setTypeMapper(new DefaultMongoTypeMapper(null));
 	}
-}
+}*/
