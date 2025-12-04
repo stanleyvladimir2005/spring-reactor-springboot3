@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SpringReactorSpringboot3Application {
 
-   void main(String[] args) {
+   public static void main(String[] args) {
         SpringApplication.run(SpringReactorSpringboot3Application.class, args);
     }
 }
