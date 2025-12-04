@@ -5,7 +5,7 @@ import com.mitocode.model.Bill;
 import com.mitocode.service.IBillService;
 import com.mitocode.util.PageSupport;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Links;
@@ -23,10 +23,10 @@ import static reactor.function.TupleUtils.function;
 
 @RestController
 @RequestMapping("/v1/bills")
+@RequiredArgsConstructor
 public class BillController {
 	
-	@Autowired
-	private IBillService service;
+	private final IBillService service;
 	
 	@GetMapping
 	public Mono<ResponseEntity<Flux<Bill>>> findAll() {

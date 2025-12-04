@@ -7,8 +7,8 @@ import com.mitocode.model.Client;
 import com.mitocode.service.IClientService;
 import com.mitocode.util.PageSupport;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.cloudinary.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Links;
@@ -30,10 +30,10 @@ import static reactor.function.TupleUtils.function;
 
 @RestController
 @RequestMapping("/v1/clients")
+@RequiredArgsConstructor
 public class ClientController {
 	
-	@Autowired
-	private IClientService service;
+	private final IClientService service;
 	
 	@GetMapping
 	public Mono<ResponseEntity<Flux<Client>>> findAll() {

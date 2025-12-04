@@ -2,7 +2,7 @@ package com.mitocode.controller;
 
 import com.mitocode.model.Menu;
 import com.mitocode.service.IMenuService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -17,12 +17,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/menus")
+@RequiredArgsConstructor
 public class MenuController {
 
-	@Autowired	
-	private IMenuService service;
+    private final IMenuService service;
 	
-		@GetMapping//CONSULTAR DE ACUERDO AL ROL DEL USUARIO QUE INICIO, DEVOLVER SUS MENUS
+	@GetMapping//CONSULTAR DE ACUERDO AL ROL DEL USUARIO QUE INICIO, DEVOLVER SUS MENUS
 	public Mono<ResponseEntity<Flux<Menu>>> listar(){
 		return ReactiveSecurityContextHolder.getContext()
 				.map(SecurityContext::getAuthentication)

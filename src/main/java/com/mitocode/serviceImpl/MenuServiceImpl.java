@@ -4,15 +4,15 @@ import com.mitocode.model.Menu;
 import com.mitocode.repo.IGenericRepo;
 import com.mitocode.repo.IMenuRepo;
 import com.mitocode.service.IMenuService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 @Service
+@RequiredArgsConstructor
 public class MenuServiceImpl extends CRUDImpl<Menu, String> implements IMenuService{
 
-	@Autowired
-	private IMenuRepo repo;
+	private final IMenuRepo repo;
 	
 	@Override
 	protected IGenericRepo<Menu, String> getRepo() {		

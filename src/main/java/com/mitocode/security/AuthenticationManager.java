@@ -1,6 +1,7 @@
 package com.mitocode.security;
 
 import io.jsonwebtoken.Claims;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,10 +14,10 @@ import java.util.stream.Collectors;
 
 //Clase S5
 @Component
+@RequiredArgsConstructor
 public class AuthenticationManager implements ReactiveAuthenticationManager{
 
-	@Autowired
-	private JWTUtil jwtUtil;
+	private final JWTUtil jwtUtil;
 	
 	@Override	
 	public Mono<Authentication> authenticate(Authentication authentication) {
@@ -34,7 +35,8 @@ public class AuthenticationManager implements ReactiveAuthenticationManager{
 			
 			@SuppressWarnings("unchecked")
 			List<String> rolesMap = claims.get("roles", List.class);
-			UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(usuario,null,rolesMap.stream().map(SimpleGrantedAuthority::new)
+			UsernamePasswordAuthenticationToken auth =
+                    new UsernamePasswordAuthenticationToken(usuario,null,rolesMap.stream().map(SimpleGrantedAuthority::new)
 							.collect(Collectors.toList()) //authority -> new SimpleGrantedAuthority(authority)).collect(Collectors.toList())
 			);
 			return Mono.just(auth);

@@ -23,8 +23,8 @@ public class WebSecurityConfig {
 		return new BCryptPasswordEncoder();
 	}
 
-	final AuthenticationManager authenticationManager;
-	final SecurityContextRepository securityContextRepository;
+	private final AuthenticationManager authenticationManager;
+	private final SecurityContextRepository securityContextRepository;
 
 	@Bean
 	public SecurityWebFilterChain securitygWebFilterChain(ServerHttpSecurity http ) {

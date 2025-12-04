@@ -5,7 +5,7 @@ import com.mitocode.security.AuthResponse;
 import com.mitocode.security.ErrorLogin;
 import com.mitocode.security.JWTUtil;
 import com.mitocode.service.IUserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -17,13 +17,11 @@ import reactor.core.publisher.Mono;
 import java.util.Date;
 
 @RestController
+@RequiredArgsConstructor
 public class LoginController {
 
-	@Autowired
-	private JWTUtil jwtUtil;
-
-	@Autowired
-	private IUserService service;
+	private final JWTUtil jwtUtil;
+    private final IUserService service;
 	
 	@PostMapping("/login")
 	public Mono<ResponseEntity<?>> login(@RequestBody AuthRequest ar){

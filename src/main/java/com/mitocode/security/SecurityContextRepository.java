@@ -1,5 +1,6 @@
 package com.mitocode.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -14,10 +15,10 @@ import reactor.core.publisher.Mono;
 
 //Clase S6
 @Component
+@RequiredArgsConstructor
 public class SecurityContextRepository implements ServerSecurityContextRepository{
 
-	@Autowired
-	private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
 	@Override
 	public Mono<Void> save(ServerWebExchange swe, SecurityContext sc) {

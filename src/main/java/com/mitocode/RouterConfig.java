@@ -1,6 +1,5 @@
 package com.mitocode;
 
-/*
 import com.mitocode.handler.ClientHandler;
 import com.mitocode.handler.BillHandler;
 import com.mitocode.handler.DishHandler;
@@ -42,4 +41,4 @@ public class RouterConfig {
 				.andRoute(PUT("/v2/bills/{id}"), handler::update)
 				.andRoute(DELETE("/v2/bills/{id}"), handler::delete);
 	}
-}*/
+}

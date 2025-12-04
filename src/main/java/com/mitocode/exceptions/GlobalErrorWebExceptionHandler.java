@@ -1,12 +1,11 @@
 package com.mitocode.exceptions;
 
-/*
 import com.mitocode.dto.ErrorResponse;
 import com.mitocode.dto.RestResponse;
 import org.springframework.boot.autoconfigure.web.WebProperties;
-import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
-import org.springframework.boot.web.reactive.error.ErrorAttributes;
+import org.springframework.boot.webflux.autoconfigure.error.AbstractErrorWebExceptionHandler;
+import org.springframework.boot.webflux.error.ErrorAttributes;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -23,7 +22,7 @@ import java.util.*;
 public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHandler {
 
 	public GlobalErrorWebExceptionHandler(ErrorAttributes errorAttributes, WebProperties webproperties,
-										  ApplicationContext applicationContext, ServerCodecConfigurer configurer) {
+                                          ApplicationContext applicationContext, ServerCodecConfigurer configurer) {
 		super(errorAttributes, webproperties.getResources(), applicationContext);
 		this.setMessageWriters(configurer.getWriters());
 	}
@@ -72,4 +71,4 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
 				.contentType(MediaType.APPLICATION_JSON)
 				.body(BodyInserters.fromValue(rr));
 	}
-}*/
+}

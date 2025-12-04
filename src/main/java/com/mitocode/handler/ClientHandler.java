@@ -3,6 +3,7 @@ package com.mitocode.handler;
 import com.mitocode.model.Client;
 import com.mitocode.service.IClientService;
 import com.mitocode.util.RequestValidator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -13,13 +14,11 @@ import java.net.URI;
 import static org.springframework.web.reactive.function.BodyInserters.fromValue;
 
 @Component
+@RequiredArgsConstructor
 public class ClientHandler {
-	
-	@Autowired
-	private IClientService service;
-	
-	@Autowired
-	private RequestValidator validadorGeneral;
+
+    private final IClientService service;
+    private final RequestValidator validadorGeneral;
 		
 	public Mono<ServerResponse> findAll(ServerRequest req){
 		return ServerResponse

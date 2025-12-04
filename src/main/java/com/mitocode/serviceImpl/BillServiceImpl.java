@@ -7,27 +7,22 @@ import com.mitocode.repo.IBillRepo;
 import com.mitocode.repo.IGenericRepo;
 import com.mitocode.repo.IDishRepo;
 import com.mitocode.service.IBillService;
+import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.util.HashMap;
 
 @Service
+@RequiredArgsConstructor
 public class BillServiceImpl extends CRUDImpl<Bill, String> implements IBillService {
-	
-	@Autowired
-	private IBillRepo repo;
-	
-	@Autowired
-	private IClientRepo clientRepo;
-	
-	@Autowired
-	private IDishRepo dishRepo;
+	private final IBillRepo repo;
+	private final IClientRepo clientRepo;
+	private final IDishRepo dishRepo;
 
-	@Override
+    @Override
 	protected IGenericRepo<Bill, String> getRepo() {
 		return repo;
 	}

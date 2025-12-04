@@ -3,7 +3,7 @@ package com.mitocode.handler;
 import com.mitocode.model.Bill;
 import com.mitocode.service.IBillService;
 import com.mitocode.util.RequestValidator;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -13,13 +13,11 @@ import java.net.URI;
 import static org.springframework.web.reactive.function.BodyInserters.fromValue;
 
 @Component
+@RequiredArgsConstructor
 public class BillHandler {
 	
-	@Autowired
-	private IBillService service;
-	
-	@Autowired
-	private RequestValidator validadorGeneral;
+	private final IBillService service;
+    private final RequestValidator validadorGeneral;
 		
 	public Mono<ServerResponse> findAll(ServerRequest req){
 		return ServerResponse

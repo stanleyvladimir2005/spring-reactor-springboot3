@@ -5,7 +5,7 @@ import com.mitocode.repo.IGenericRepo;
 import com.mitocode.repo.IRolRepo;
 import com.mitocode.repo.IUserRepo;
 import com.mitocode.service.IUserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -13,15 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl extends CRUDImpl<User, String> implements IUserService {
 
-	@Autowired
-	private IUserRepo repo;
-	
-	@Autowired
-	private IRolRepo rolRepo;
-	
-	@Override
+	private final IUserRepo repo;
+	private final IRolRepo rolRepo;
+
+    @Override
 	protected IGenericRepo<User, String> getRepo() {
 		return repo; 
 	}

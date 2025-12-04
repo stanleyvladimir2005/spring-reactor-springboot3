@@ -17,9 +17,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class User implements UserDetails {
 	
-	@Serial
-	private static final long serialVersionUID = 1L;
-	
+	@Serial private static final long serialVersionUID = 1L;
 	private String username;
 	private String password;	
 	private Boolean enabled;

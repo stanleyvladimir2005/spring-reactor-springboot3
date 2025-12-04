@@ -4,6 +4,7 @@ import com.mitocode.dto.HateoasModel;
 import com.mitocode.model.Dish;
 import com.mitocode.service.IDishService;
 import com.mitocode.util.RequestValidator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -15,13 +16,11 @@ import java.util.List;
 import static org.springframework.web.reactive.function.BodyInserters.fromValue;
 
 @Component
+@RequiredArgsConstructor
 public class DishHandler {
 	
-	@Autowired
-	private IDishService service;
-	
-	@Autowired
-	private RequestValidator validadorGeneral;
+	private final IDishService service;
+    private final RequestValidator validadorGeneral;
 		
 	public Mono<ServerResponse> findAll(ServerRequest req){
 		return ServerResponse
