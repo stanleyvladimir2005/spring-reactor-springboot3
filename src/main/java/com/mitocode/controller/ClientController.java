@@ -46,7 +46,7 @@ public class ClientController {
 	}
 	
 	@GetMapping("/{id}")
-	public Mono<ResponseEntity<Client>> findById(@PathVariable("id") String id){
+	public Mono<ResponseEntity<Client>> findById(@PathVariable String id){
 		return service.findById(id) //Mono<Client>
 				.map(p -> ResponseEntity.ok()
 						.contentType(MediaType.APPLICATION_JSON)
@@ -65,7 +65,7 @@ public class ClientController {
 	}
 	
 	@PutMapping("/{id}")
-	public Mono<ResponseEntity<Client>> update(@Valid @RequestBody Client p, @PathVariable("id") String id){
+	public Mono<ResponseEntity<Client>> update(@Valid @RequestBody Client p, @PathVariable String id){
 		var monoClient = Mono.just(p);
 		var monoBD = service.findById(id);
 		return monoBD
@@ -85,7 +85,7 @@ public class ClientController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public Mono<ResponseEntity<Void>> delete(@PathVariable("id") String id){
+	public Mono<ResponseEntity<Void>> delete(@PathVariable String id){
 		return service.findById(id)
 				.flatMap(p -> service.delete(p.getId()) //Mono<Void>
 						.then(Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT))))
@@ -93,7 +93,7 @@ public class ClientController {
 	}
 		
 	@GetMapping("/hateoas/{id}")
-	public Mono<EntityModel<Client>> listByHateoas(@PathVariable("id") String id){
+	public Mono<EntityModel<Client>> listByHateoas(@PathVariable String id){
 		//localhost:8080/clients/60779cc08e37a27164468033
 		var link1 =linkTo(methodOn(ClientController.class).findById(id)).withSelfRel().toMono();
 		var link2 =linkTo(methodOn(ClientController.class).findById(id)).withSelfRel().toMono();
