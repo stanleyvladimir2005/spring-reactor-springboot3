@@ -27,7 +27,8 @@ public class LoginController {
 	public Mono<ResponseEntity<?>> login(@RequestBody AuthRequest ar){
 		return service.searchByUser(ar.getUsername())
 				.map((userDetails) -> {
-					if(BCrypt.checkpw(ar.getPassword(), userDetails.getPassword())) {
+                    assert userDetails.getPassword() != null;
+                    if(BCrypt.checkpw(ar.getPassword(), userDetails.getPassword())) {
 						var token = jwtUtil.generateToken(userDetails);
 						var expiration = jwtUtil.getExpirationDateFromToken(token);
 						return ResponseEntity.ok(new AuthResponse(token, expiration));
@@ -40,7 +41,8 @@ public class LoginController {
 	public Mono<ResponseEntity<?>> login(@RequestHeader("user") String user, @RequestHeader("password") String clave){
 		return service.searchByUser(user)
 				.map((userDetails) -> {
-					if(BCrypt.checkpw(clave, userDetails.getPassword())) {
+                    assert userDetails.getPassword() != null;
+                    if(BCrypt.checkpw(clave, userDetails.getPassword())) {
 						var token = jwtUtil.generateToken(userDetails);
 						var expiracion = jwtUtil.getExpirationDateFromToken(token);
 						return ResponseEntity.ok(new AuthResponse(token, expiracion));

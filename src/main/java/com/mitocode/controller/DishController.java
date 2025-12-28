@@ -58,7 +58,7 @@ public class DishController {
 	}
 	
 	@GetMapping("/{id}")
-	public Mono<ResponseEntity<Dish>> findById(@PathVariable("id") String id){
+	public Mono<ResponseEntity<Dish>> findById(@PathVariable String id){
 		return service.findById(id) //Mono<Dish>
 				.map(p -> ResponseEntity.ok()
 						.contentType(MediaType.APPLICATION_JSON)
@@ -77,7 +77,7 @@ public class DishController {
 	}
 	
 	@PutMapping("/{id}")
-	public Mono<ResponseEntity<Dish>> update(@Valid @RequestBody Dish p, @PathVariable("id") String id){
+	public Mono<ResponseEntity<Dish>> update(@Valid @RequestBody Dish p, @PathVariable String id){
 		var monoDish = Mono.just(p);
 		var monoBD = service.findById(id);
 		return monoBD
@@ -96,7 +96,7 @@ public class DishController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public Mono<ResponseEntity<Void>> delete(@PathVariable("id") String id){
+	public Mono<ResponseEntity<Void>> delete(@PathVariable String id){
 		return service.findById(id)
 				.flatMap(p -> service.delete(p.getId()) // Mono<Void>  return service.eliminar(p.getId())
 						.then(Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT))))
@@ -104,7 +104,7 @@ public class DishController {
 	}
 	
 	@GetMapping("/hateoas/{id}")
-	public Mono<EntityModel<Dish>> listByHateoas(@PathVariable("id") String id){
+	public Mono<EntityModel<Dish>> listByHateoas(@PathVariable String id){
 		//localhost:8080/Dishes/60779cc08e37a27164468033	
 		var link1 =linkTo(methodOn(DishController.class).findById(id)).withSelfRel().toMono();
 		var link2 =linkTo(methodOn(DishController.class).findById(id)).withSelfRel().toMono();

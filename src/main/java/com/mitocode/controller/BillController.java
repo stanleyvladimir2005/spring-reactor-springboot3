@@ -39,7 +39,7 @@ public class BillController {
 	}
 	
 	@GetMapping("/{id}")
-	public Mono<ResponseEntity<Bill>> findById(@PathVariable("id") String id){
+	public Mono<ResponseEntity<Bill>> findById(@PathVariable String id){
 		return service.findById(id) //Mono<Bill>
 				.map(p -> ResponseEntity.ok()
 						.contentType(MediaType.APPLICATION_JSON)
@@ -58,7 +58,7 @@ public class BillController {
 	}
 	
 	@PutMapping("/{id}")
-	public Mono<ResponseEntity<Bill>> modificar(@Valid @RequestBody Bill p, @PathVariable("id") String id){
+	public Mono<ResponseEntity<Bill>> modificar(@Valid @RequestBody Bill p, @PathVariable String id){
 		var monoBill = Mono.just(p);
 		var monoBD = service.findById(id);
 		return monoBD
@@ -78,7 +78,7 @@ public class BillController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public Mono<ResponseEntity<Void>> delete(@PathVariable("id") String id){
+	public Mono<ResponseEntity<Void>> delete(@PathVariable String id){
 		return service.findById(id)
 				.flatMap(p -> service.delete(p.getId()) //Mono<Void>
 						.then(Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT))))
@@ -86,7 +86,7 @@ public class BillController {
 	}
 
 	@GetMapping("/hateoas/{id}")
-	public Mono<EntityModel<Bill>> listByHateoas(@PathVariable("id") String id){
+	public Mono<EntityModel<Bill>> listByHateoas(@PathVariable String id){
 		//localhost:8080/platos/60779cc08e37a27164468033	
 		var link1 =linkTo(methodOn(BillController.class).findById(id)).withSelfRel().toMono();
 		var link2 =linkTo(methodOn(BillController.class).findById(id)).withSelfRel().toMono();
@@ -117,7 +117,7 @@ public class BillController {
 	}
 
 	@GetMapping("/generarReporte/{id}")
-	public Mono<ResponseEntity<byte[]>> generarReporte(@PathVariable("id") String id){
+	public Mono<ResponseEntity<byte[]>> generarReporte(@PathVariable String id){
 		var monoReporte = service.generateReport(id);
 		return monoReporte
 				.map(bytes -> ResponseEntity.ok()
